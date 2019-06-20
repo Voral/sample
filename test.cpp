@@ -1,23 +1,18 @@
 #include <iostream>
+#include <cstring>
 using namespace std;
 class Desk
 {
  private:
  	const char EMPTY = '-';
 	const char SHIP = '+';
-	char table[10][10] = {
- 		{this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY},
- 		{this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY},
- 		{this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY},
- 		{this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY},
- 		{this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY},
- 		{this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY},
- 		{this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY},
- 		{this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY},
- 		{this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY},
- 		{this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY,this->EMPTY}
-	};
+	char table[10][10] = {};
+ 	const char rY[10] =  {abcdefghkl};
+	const char rDirect[10] =  {rlud};
   public:
+	Desk(){
+		memset(this->table, this->EMPTY, sizeof(this->table));
+	}
 	void draw(){
 		int i, j;
 		for (i=0; i<10; ++i) {
@@ -32,6 +27,7 @@ class Desk
   		this->addShipSize(2, 3);
   		this->addShipSize(3, 2);
   		this->addShipSize(4, 1);
+	//	this->addShip_(4);
 	}
 private:
 	
@@ -40,6 +36,13 @@ private:
 		for (i=0; i<count; ++i) {
 			this->addShip(size);
 		}
+	}
+	
+	void addShip_(int size) {
+		char a[5] = {'z','z','z','z','z'};
+		cout << "Params for ship size " << size << endl;
+		cin >> a;
+		cout << a[0] << a[1] << a[2] << atoi(&a[0]) << endl;
 	}
 	
 	void addShip(int size){
