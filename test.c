@@ -45,41 +45,43 @@ void addShipsForSize(int size, int count) {
 }
 
 void addShip(int number,int size) {
-	char a[5] = {'-','-','-','-','-'}, first = 1;
+	char a[5] = {'-','-','-','-','-'};
 	do{
-		if (!first) {
-			puts("Wrong params. Enter again...");
-		}
-		first = 0;
 		printf("Enter params for ship %d size %d <x>.<y>[.<direct>]\r\n",number,size);
 		scanf("%c.%c.%c", &a[0], &a[2], &a[4]);
 	}while (checkAndSetShip(a[0],a[2],a[4],size) == 0);
 }
 
 int checkAndSetShip(char cx, char cy, char direct, int size){
-	int x = cx - '0' - 1;
+	int x = cx - '0' - 1, result = 0;
 	char posY = strchr (RANGE_Y,cy);	
 
-	if (posY==NULL || x<0 || x>9 || (size>1 && strchr(RANGE_DIRECT,direct) == NULL)) return 0;
+	if (posY!=NULL 
+		&& x>0 && x<11
+		&& (size == 1 ||(size>1 && strchr(RANGE_DIRECT,direct) != NULL))
+	){	
+		int	y = strchr (RANGE_Y,cy) - RANGE_Y;		
+		if (direct == DIRECT_UP) {
+			x -= (size - 1);
+			direct = DIRECT_DOWN;
+		} else if (direct == DIRECT_LEFT) {
+			y -= (size - 1);
+			direct = DIRECT_RIGHT;
+		}
 		
-	int	y = strchr (RANGE_Y,cy) - RANGE_Y;
-	
-	if (direct == DIRECT_UP) {
-		x -= (size - 1);
-		direct = DIRECT_DOWN;
-	} else if (direct == DIRECT_LEFT) {
-		y -= (size - 1);
-		direct = DIRECT_RIGHT;
+		if (checkCoord(x,y,direct,size) == 0) {
+			result = 0;
+		} else {
+			setShip(x,y,direct,size);
+			return 1;
+		}
 	}
-	
-	if (checkCoord(x,y,direct,size) == 0) {
-		return 0;
-	}
-	
-	setShip(x,y,direct,size);
-	
-	return 1;
+	if (result == 0) {
+		puts("Wrong params. Enter again...");
+	}	
+	return result;
 }
+
 
 void draw(){
 	int i,j;
