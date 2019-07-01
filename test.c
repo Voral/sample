@@ -14,7 +14,7 @@ const char DIRECT_RIGHT = 'r';
 char desk[10][10] = {};
 
 int checkCoord(int x, int y, char direct, int size);
-int checkAndSetShip(char cx, char cy, char direct, int size);
+int checkAndSetShip(int x, char cy, char direct, int size);
 void addShip();
 void setShips();
 void draw();
@@ -45,20 +45,22 @@ void addShipsForSize(int size, int count) {
 }
 
 void addShip(int number,int size) {
-	char a[5] = {'-','-','-','-','-'};
+	char y, dir = '-';
+	int x = -1;
 	do{
 		printf("Enter params for ship %d size %d <x>.<y>[.<direct>]\r\n",number,size);
-		scanf("%c.%c.%c", &a[0], &a[2], &a[4]);
-	}while (checkAndSetShip(a[0],a[2],a[4],size) == 0);
+		scanf("%d.%c.%c", &x, &y, &dir);
+	} while (checkAndSetShip(x, y, dir, size) == 0);
 }
 
-int checkAndSetShip(char cx, char cy, char direct, int size){
-	int x = cx - '0' - 1, result = 0;
-	char posY = strchr (RANGE_Y,cy);	
-
-	if (posY!=NULL 
-		&& x>0 && x<11
-		&& (size == 1 ||(size>1 && strchr(RANGE_DIRECT,direct) != NULL))
+int checkAndSetShip(int x, char cy, char direct, int size){
+	int result = 0;
+	--x;
+	char *posY = strchr (RANGE_Y, cy);	
+	if (
+		posY != NULL 
+		&& x>-1 && x<10
+		&& (size == 1 || (size > 1 && strchr(RANGE_DIRECT,direct) != NULL))
 	){	
 		int	y = strchr (RANGE_Y,cy) - RANGE_Y;		
 		if (direct == DIRECT_UP) {
@@ -73,7 +75,7 @@ int checkAndSetShip(char cx, char cy, char direct, int size){
 			result = 0;
 		} else {
 			setShip(x,y,direct,size);
-			return 1;
+			result = 1;
 		}
 	}
 	if (result == 0) {
